@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchAllPosts } from '../actions';
+import { fetchAll as fetchAllPosts } from '../actions/posts';
 
 class Default extends Component{ 
   componentDidMount() {
