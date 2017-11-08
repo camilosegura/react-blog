@@ -1,17 +1,17 @@
-import { TEST } from '../actions';
+import { ALL_POSTS } from '../actions';
 
 const initialState = {
-  test: 'Hola'
+  posts: []
 }
 
 const blog = (state = initialState, action) => {
-  const { test } = action;
+  const { posts } = action;
 
   switch(action.type) {
-    case TEST :
+    case ALL_POSTS :
       return {
         ...state,
-        test
+        posts
       }
     default :
       return state;
