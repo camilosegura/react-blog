@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Posts from './Posts';
 
-const Category = (props) => (
-  <div className="category">
-    Category Componet
+class Category extends Component {
+  render() {
+    return (
+      <div className="category">
+        <Posts posts={this.props.posts} />
+      </div>
+    );
+  }
+}
 
-  </div>
-);
+const mapStateToProps = (state, ownState) => ({
+  posts: state.posts.filter(post => (
+    post.category === ownState.match.params.category
+  ))
+});
 
-export default Category;
+const mapDispatchToProps = dispatch => ({
+  
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);
