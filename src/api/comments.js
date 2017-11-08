@@ -1,6 +1,6 @@
 import { api, headers, PUT, POST, DELETE } from './common';
 
-export const getByParent = (token, id) =>
+export const getByParent = (id) =>
   fetch(`${api}/posts/${id}/comments`, { headers })
     .then(res => res.json())
 
@@ -8,7 +8,7 @@ export const get = (id) =>
   fetch(`${api}/comments/${id}`, { headers })
     .then(res => res.json())
 
-export const edit = (token, id, body) =>
+export const edit = (id, body) =>
   fetch(`${api}/comments/${id}`, {
     method: PUT,
     headers: {
@@ -18,7 +18,7 @@ export const edit = (token, id, body) =>
     body: JSON.stringify({ body })
   })
 
-export const add = (token, body) =>
+export const add = (body) =>
   fetch(`${api}/comments`, {
     method: POST,
     headers: {
@@ -28,7 +28,7 @@ export const add = (token, body) =>
     body: JSON.stringify({ body })
   })
 
-export const vote = (token, id, body) =>
+export const vote = (id, body) =>
   fetch(`${api}/comments/${id}`, {
     method: POST,
     headers: {
@@ -38,7 +38,7 @@ export const vote = (token, id, body) =>
     body: JSON.stringify({ body })
   })
 
-export const disable = (token, id) =>
+export const disable = (id) =>
   fetch(`${api}/comments/${id}`, {
     method: DELETE,
     headers

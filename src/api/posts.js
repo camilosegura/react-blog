@@ -4,11 +4,11 @@ export const getAll = () =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json())
 
-export const getByCategory = (token, category) =>
-  fetch(`${api}/${category}/posts`)
+export const getByCategory = (category) =>
+  fetch(`${api}/${category}/posts`, { headers })
     .then(res => res.json())
 
-export const add = (token, body) =>
+export const add = (body) =>
   fetch(`${api}/posts`, {
     method: POST,
     headers: {
@@ -23,7 +23,7 @@ export const get = (id) =>
    fetch(`${api}/posts/${id}`)
     .then(res => res.json())
 
-export const disable = (token, id) =>
+export const disable = (id) =>
   fetch(`${api}/posts/${id}`, {
     method: DELETE,
     headers: {
@@ -32,7 +32,7 @@ export const disable = (token, id) =>
   })
   .then(res => res.json())
 
-export const vote = (token, id, body) =>
+export const vote = (id, body) =>
   fetch(`${api}/posts/${id}`, {
     method: POST,
     headers: {
@@ -43,7 +43,7 @@ export const vote = (token, id, body) =>
   })
   .then(res => res.json())
 
-  export const edit = (token, id, body) =>
+  export const edit = (id, body) =>
     fetch(`${api}/posts/${id}`, {
       method: PUT,
       headers: {

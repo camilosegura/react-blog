@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchAll as fetchAllCategories } from '../actions/categories';
 
 class Navbar extends Component {
-    componentDidMount() {
-        this.props.getAllCategories();
-    }
 
     render() {
         return (
@@ -21,7 +17,7 @@ class Navbar extends Component {
                         <ul className="navbar-nav mr-auto">
                             {this.props.categories.map(category => (
                                 <li className="nav-item active" key={category.name}>
-                                    <a className="nav-link" href={`/category/${category.path}/posts`}>{category.name} <span className="sr-only">(current)</span></a>
+                                    <Link className="nav-link" to={`/category/${category.path}/posts`}>{category.name} <span className="sr-only">(current)</span></Link>
                                 </li>
                             ))}
                             
@@ -54,7 +50,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    getAllCategories: () => dispatch(fetchAllCategories())
+    
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

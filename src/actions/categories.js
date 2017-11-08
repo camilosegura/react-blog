@@ -9,7 +9,6 @@ export const getAll = (categories) => {
   }
 }
 
-export const fetchAll = () => dispatch => {
+export const fetchAll = () => dispatch => 
   APICategories.getAll()
     .then(categories => dispatch(getAll(categories)))
-}
