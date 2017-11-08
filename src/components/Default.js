@@ -1,23 +1,44 @@
 
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { testAction } from '../actions';
+import { fetchAllPosts } from '../actions';
 
-const Default = (props) => (
-  <div className="default">  
-    Default Componet
-    <button onClick={() => props.dispatch(testAction('New Test'))}>Click Me</button>
-  </div>
-);
+class Default extends Component{ 
+  componentDidMount() {
+    this.props.getAllPost();
+  }
+  
+  render() {
+    return (
+      <div className="default">  
+        Default Componet
+        {this.props.posts.map((post) => (
+          <article key={post.id}>
+            <h3>{post.title}</h3>
+            <footer>
+              <span>{post.voteScore} votes</span>
+              <span> | by {post.author}</span>
+              <span> | {post.commentCount} comments</span>
+              <span> | created {new Date(post.timestamp).toLocaleDateString('en-US')}</span>
+            </footer>            
+          </article>
+        ))}
 
-const mapStateToProps = (state) => {
-  return {
-    test: state.test
+      </div>
+    );
   }
 }
 
-const mapDispatchToPtops = ({
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts.sort((a, b) => (
+      b.voteScore - a.voteScore
+    ))
+  }
+}
 
+const mapDispatchToPtops = (dispatch) => ({
+  getAllPost: () => dispatch(fetchAllPosts())
 });
 
-export default connect(mapStateToProps)(Default);
+export default connect(mapStateToProps, mapDispatchToPtops)(Default);
