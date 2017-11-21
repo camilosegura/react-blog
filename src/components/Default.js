@@ -11,7 +11,7 @@ class Default extends Component{
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     posts: state.posts.sort((a, b) => (
       b.voteScore - a.voteScore
@@ -19,8 +19,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToPtops = dispatch => ({
+const mapDispatchToProps = dispatch => ({
   
 });
 
-export default connect(mapStateToProps, mapDispatchToPtops)(Default);
+export default connect(mapStateToProps, mapDispatchToProps)(Default);
