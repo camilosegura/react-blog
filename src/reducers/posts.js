@@ -4,7 +4,7 @@ const initialState = []
 
 const posts = (state = initialState, action) => {
   const { posts } = action;
-console.log(posts)
+
   switch(action.type) {
     case ALL_POSTS :
       return [
