@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import $ from 'jquery';
 import { fetchByParent as fetchComments } from '../actions/comments';
 import Card from './Card';
+import Modal from './Modal';
+
+const ID_MODAL = 'modal-add-comments';
 
 class Post extends Component {
 
@@ -11,7 +15,7 @@ class Post extends Component {
   }
 
   addComment() {
-    console.log(this.props)
+    window.$(`#${ID_MODAL}`).modal('show');
   }
 
   componentDidMount() {
@@ -27,7 +31,10 @@ class Post extends Component {
           { comments.map(comment => (
             <Card document={comment} key={comment.id} />
           )) }
-        </Card>  
+        </Card>
+        <Modal id={ID_MODAL}>
+           
+        </Modal>
       </div>
     )
   }
