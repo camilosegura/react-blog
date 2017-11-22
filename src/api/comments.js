@@ -25,7 +25,7 @@ export const add = (body) =>
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ body })
+    body: JSON.stringify({ ...body })
   })
 
 export const vote = (id, body) =>

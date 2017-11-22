@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import $ from 'jquery';
-import { fetchByParent as fetchComments } from '../actions/comments';
+import uuidv1 from 'uuid/v1'
+import { fetchByParent as fetchComments, addByParent } from '../actions/comments';
 import Card from './Card';
 import Modal from './Modal';
 
@@ -26,7 +26,19 @@ class Post extends Component {
 
   onSubmit(event) {
     event.preventDefault()
-    console.log(this.state)
+    console.log(this.state, uuidv1())
+    const body = {
+      id: uuidv1(),
+      timestamp: Date.now(),
+      body: this.state.body,
+      author: this.state.author,
+      parentId: this.props.match.params.id
+    };
+
+    console.log('body', body)
+
+    this.props.addComment(body);
+
   }
 
   onChange() {
@@ -92,7 +104,8 @@ const mapStateToProps = (state, ownState) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-          getComments: id => dispatch(fetchComments(id))
+          getComments: id => dispatch(fetchComments(id)),
+          addComment: body => dispatch(addByParent(body))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
