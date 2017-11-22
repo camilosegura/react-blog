@@ -1,37 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchByParent as fetchComments } from '../actions/comments';
+import Card from './Card';
 
 class Post extends Component {
+
+  constructor(props) {
+    super(props);
+    this.addComment = this.addComment.bind(this);
+  }
+
+  addComment() {
+    console.log(this.props)
+  }
+
   componentDidMount() {
     this.props.getComments(this.props.match.params.id);
   }
 
   render() {
     const { post, comments } = this.props;
-    
+    console.log(comments)
     return (
       <div className="post">
-        
-        <article key={post.id}>
-          <h3>
-            {post.title}
-          </h3>
-          <main>{post.body}</main>
-          <footer>
-            <span>{post.voteScore} votes</span>
-            <span> | by {post.author}</span>
-            <span> | {post.commentCount} comments</span>
-            <span> | created {new Date(post.timestamp).toLocaleDateString('en-US')}</span>
-          </footer>
-          <div>
-            { comments.map(comment => (
-              <div>
-                { comment.body }
-              </div>
-            )) }
-          </div>            
-        </article>
+        <Card document={post} addComment={this.addComment}>
+          { comments.map(comment => (
+            <Card document={comment} key={comment.id} />
+          )) }
+        </Card>  
       </div>
     )
   }
