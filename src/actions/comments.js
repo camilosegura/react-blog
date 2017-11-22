@@ -20,4 +20,5 @@ export const add = comment => ({
 
 export const addByParent = body => dispatch => 
   APIComments.add(body)
-    .then(res => console.log('resp', res))
+    .then(res => res.json())
+    .then(comment => dispatch(add(comment)))

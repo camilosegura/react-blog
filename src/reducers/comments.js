@@ -1,9 +1,9 @@
-import { BY_PARENT } from '../actions/comments';
+import { BY_PARENT, ADD } from '../actions/comments';
 
 const initialState = []
 
 const comments = (state = initialState, action) => {
-    const { comments } = action;
+    const { comments, comment } = action;
     switch (action.type) {
         case BY_PARENT :
             
@@ -16,6 +16,11 @@ const comments = (state = initialState, action) => {
                 ...filteredState,
                 ...comments
             ];
+        case ADD :
+            return [
+                ...state,
+                comment
+            ]
         default :
             return state;
     }
