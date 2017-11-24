@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1'
-import { fetchByParent as fetchComments, addByParent } from '../actions/comments';
+import { fetchByParent as fetchComments, addByParent, editById as editCommentById} from '../actions/comments';
 import Card from './Card';
 import Modal from './Modal';
+import { edit } from '../api/comments';
 
 const ID_MODAL = 'modal-add-comments';
 
@@ -12,21 +13,73 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: '',
       author: '',
-      body: ''
+      body: '',
+      onSubmit: () => {},
+      edit: false
     };
     this.addComment = this.addComment.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.editComment = this.editComment.bind(this);
+    this.onEditComment = this.onEditComment.bind(this)
   }
 
   addComment() {
+    this.setState({
+      id: '',
+      author: '',
+      body: '',
+      onSubmit: this.onSubmit,
+      edit: false
+    })
     window.$(`#${ID_MODAL}`).modal('show');
+  }
+
+  edit() {
+
+  }
+
+  remove() {
+
+  }
+
+  editComment(comment) {
+    
+    this.setState({
+      id: comment.id,
+      author: comment.author,
+      body: comment.body,
+      onSubmit: this.onEditComment,
+      edit: true
+    }, () => {
+      window.$(`#${ID_MODAL}`).modal('show');
+    });
+
+    
+  }
+
+  onEditComment(event) {
+    event.preventDefault();
+    const id = this.state.id;
+    const comment = {
+      id: this.state.id,
+      body: this.state.body,
+      timestamp: Date.now()
+    }
+
+    this.props.editComment(id, comment)
+
+  }
+
+  removeComment() {
+
   }
 
   onSubmit(event) {
     event.preventDefault()
-    console.log(this.state, uuidv1())
+    
     const body = {
       id: uuidv1(),
       timestamp: Date.now(),
@@ -34,8 +87,6 @@ class Post extends Component {
       author: this.state.author,
       parentId: this.props.match.params.id
     };
-
-    console.log('body', body)
 
     this.props.addComment(body);
 
@@ -59,12 +110,12 @@ class Post extends Component {
       <div className="post">
         <Card document={post} addComment={this.addComment}>
           {comments.map(comment => (
-            <Card document={comment} key={comment.id} />
+            <Card document={comment} key={comment.id} edit={this.editComment}/>
           ))}
         </Card>
         <Modal id={ID_MODAL}>
-          <form onSubmit={this.onSubmit}>
-            <div className="form-group">
+          <form onSubmit={this.state.onSubmit}>
+            <div className="form-group" style={{display: (this.state.edit && 'none') || 'block'}}>
               <label htmlFor="author">Author</label>
               <input 
                 type="text" 
@@ -73,6 +124,7 @@ class Post extends Component {
                 placeholder="Author" 
                 ref={author => { this.author = author}}
                 onChange={this.onChange}
+                value={this.state.author}
               />
             </div>
             <div className="form-group">
@@ -83,6 +135,7 @@ class Post extends Component {
                 rows="3" 
                 ref={body => { this.body = body }}
                 onChange={this.onChange}
+                value={this.state.body}
               ></textarea>
             </div>
             <button className="btn btn-success" type="submit">Send</button>
@@ -105,7 +158,8 @@ const mapStateToProps = (state, ownState) => {
 
 const mapDispatchToProps = dispatch => ({
           getComments: id => dispatch(fetchComments(id)),
-          addComment: body => dispatch(addByParent(body))
+          addComment: body => dispatch(addByParent(body)),
+          editComment: (id, comment) => dispatch(editCommentById(id, comment))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);

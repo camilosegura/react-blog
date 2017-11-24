@@ -1,9 +1,9 @@
-import { BY_PARENT } from '../actions/comments';
+import { BY_PARENT, ADD, EDIT } from '../actions/comments';
 
 const initialState = []
 
 const comments = (state = initialState, action) => {
-    const { comments } = action;
+    const { comments, comment } = action;
     switch (action.type) {
         case BY_PARENT :
             
@@ -16,6 +16,21 @@ const comments = (state = initialState, action) => {
                 ...filteredState,
                 ...comments
             ];
+        case ADD :
+            return [
+                ...state,
+                comment
+            ]
+        case EDIT :
+            const newState = state.map(st => {
+                if (st.id === comment.id) {
+                    st.body = comment.body;
+                    st.timestamp = comment.timestamp;
+                }
+
+                return st;
+            });
+            return newState
         default :
             return state;
     }
