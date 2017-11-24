@@ -2,6 +2,7 @@ import * as APIComments from '../api/comments';
 
 export const BY_PARENT = "BY_PARENT";
 export const ADD = 'ADD';
+export const EDIT = 'EDIT';
 
 export const getByParent = (comments) => ({
   type: BY_PARENT,
@@ -22,3 +23,13 @@ export const addByParent = body => dispatch =>
   APIComments.add(body)
     .then(res => res.json())
     .then(comment => dispatch(add(comment)))
+
+export const edit = comment => ({
+  type: EDIT,
+  comment
+})
+
+export const editById = (id, comment) => dispatch => 
+  APIComments.edit(id, comment)
+    .then(res => res.json())
+    .then(comment => dispatch(edit(comment)))
