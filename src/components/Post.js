@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1'
-import { fetchByParent as fetchComments, addByParent, editById as editCommentById} from '../actions/comments';
+import { fetchByParent as fetchComments, addByParent, editById as editCommentById, disableById as disableCommentById} from '../actions/comments';
 import Card from './Card';
 import Modal from './Modal';
 import { edit } from '../api/comments';
@@ -9,7 +9,7 @@ import { edit } from '../api/comments';
 const ID_MODAL = 'modal-add-comments';
 
 class Post extends Component {
-
+ 
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +24,7 @@ class Post extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.editComment = this.editComment.bind(this);
     this.onEditComment = this.onEditComment.bind(this)
+    this.removeComment = this.removeComment.bind(this);
   }
 
   addComment() {
@@ -73,8 +74,8 @@ class Post extends Component {
 
   }
 
-  removeComment() {
-
+  removeComment(id) {
+    this.props.removeComment(id);
   }
 
   onSubmit(event) {
@@ -110,7 +111,7 @@ class Post extends Component {
       <div className="post">
         <Card document={post} addComment={this.addComment}>
           {comments.map(comment => (
-            <Card document={comment} key={comment.id} edit={this.editComment}/>
+            <Card document={comment} key={comment.id} edit={this.editComment} remove={this.removeComment} />
           ))}
         </Card>
         <Modal id={ID_MODAL}>
@@ -151,15 +152,16 @@ const mapStateToProps = (state, ownState) => {
   const post = posts.length && posts[0];
 
   return {
-          post,
-        comments: state.comments.filter(comment => comment.parentId === ownState.match.params.id)
+        post,
+        comments: state.comments.filter(comment => comment.parentId === ownState.match.params.id && !comment.deleted)
   }
 };
 
 const mapDispatchToProps = dispatch => ({
           getComments: id => dispatch(fetchComments(id)),
           addComment: body => dispatch(addByParent(body)),
-          editComment: (id, comment) => dispatch(editCommentById(id, comment))
+          editComment: (id, comment) => dispatch(editCommentById(id, comment)),
+          removeComment: id => dispatch(disableCommentById(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);

@@ -1,4 +1,4 @@
-import { BY_PARENT, ADD, EDIT } from '../actions/comments';
+import { BY_PARENT, ADD, EDIT, DELETE } from '../actions/comments';
 
 const initialState = []
 
@@ -31,6 +31,9 @@ const comments = (state = initialState, action) => {
                 return st;
             });
             return newState
+        case DELETE :
+            const actives = state.filter(st => st.id !== comment.id);
+            return actives;
         default :
             return state;
     }
