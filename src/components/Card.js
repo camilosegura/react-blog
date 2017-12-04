@@ -1,13 +1,13 @@
 import React from 'react';
 
-const Card = ({document, addComment, edit, remove, children}) => (
+const Card = ({document, addComment, edit, remove, voteUp, voteDown, children}) => (
     <article key={document.id} className="card mt-3">
         {document.title && <h3 className="card-header">
             {document.title}
         </h3>}
         <main className="card-body">{document.body}</main>
         <footer className="card-footer">
-        <span>{document.voteScore} votes</span>
+        <span>{document.voteScore} votes <i className="ion-arrow-up-b" role="button" style={{cursor: 'pointer'}} onClick={() => voteUp(document.id)}></i> <i className="ion-arrow-down-b" role="button" style={{cursor: 'pointer'}} onClick={() => voteDown(document.id)}></i> </span>
         <span> | by {document.author}</span>
         {(document.commentCount && <span> | {document.commentCount} comments 
             <i className="ion-plus-circled ml-2" role="button" style={{cursor: 'pointer'}} onClick={() => addComment()}></i>
