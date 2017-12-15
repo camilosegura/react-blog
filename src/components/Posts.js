@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ControlsBar from './ControlsBar'
 
 const Posts = ({posts}) => (
     <div className="posts">
+        <ControlsBar />
         {posts.map(post => (
           <article key={post.id} className="card mt-3">
             <h3 className="card-header">

@@ -2,6 +2,7 @@ import * as APIPosts from '../api/posts';
 
 export const ALL_POSTS = 'ALL_POSTS';
 export const BY_CATEGORY_POSTS = 'BY_CATEGORY_POSTS';
+export const ADD_POST = 'ADD_POST';
 
 export const getAll = (posts) => {
   return {
@@ -23,3 +24,12 @@ export const getByCategory = posts => ({
 export const fetchByCategory = category => dispatch =>
   APIPosts.getByCategory(category)
     .then(posts => dispatch(getByCategory(posts)))
+
+export const add = post => ({
+  type: ADD_POST,
+  post
+})
+
+export const postNew = post => dispatch =>
+  APIPosts.add(post)
+    .then(post => dispatch(add(post)))
