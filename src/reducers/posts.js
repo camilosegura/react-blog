@@ -1,9 +1,9 @@
-import { ALL_POSTS, BY_CATEGORY_POSTS } from '../actions/posts';
+import { ALL_POSTS, BY_CATEGORY_POSTS, ADD_POST } from '../actions/posts';
 
 const initialState = []
 
 const posts = (state = initialState, action) => {
-  const { posts } = action;
+  const { posts, post } = action;
 
   switch(action.type) {
     case ALL_POSTS :
@@ -16,6 +16,11 @@ const posts = (state = initialState, action) => {
         ...state,
         ...posts
       ];
+    case ADD_POST :
+      return [
+        ...state,
+        post
+      ]
     default :
       return state;
   }
