@@ -3,6 +3,7 @@ import * as APIPosts from '../api/posts';
 export const ALL_POSTS = 'ALL_POSTS';
 export const BY_CATEGORY_POSTS = 'BY_CATEGORY_POSTS';
 export const ADD_POST = 'ADD_POST';
+export const EDIT_POST = 'EDIT_POST';
 
 export const getAll = (posts) => {
   return {
@@ -33,3 +34,12 @@ export const add = post => ({
 export const postNew = post => dispatch =>
   APIPosts.add(post)
     .then(post => dispatch(add(post)))
+
+const edit = post => ({
+  type: EDIT_POST,
+  post
+})
+
+export const postEdit = (post) => dispatch =>
+  APIPosts.edit(post.id, post)
+    .then(post => dispatch(edit(post)))

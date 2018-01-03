@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1'
-import { postNew } from '../actions/posts';
+import { postNew, postEdit } from '../actions/posts';
 
 class CreateEdit extends Component {
   constructor(props) {
@@ -14,14 +14,15 @@ class CreateEdit extends Component {
       category: ''
     }
 
+    this.onEdit = this.onEdit.bind(this);
     this.onCreate = this.onCreate.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
   onCreate(event) {
     event.preventDefault()
-    
-    const body = {
+
+    const post = {
       id: uuidv1(),
       timestamp: Date.now(),
       title: this.state.title,
@@ -30,38 +31,56 @@ class CreateEdit extends Component {
       author: this.state.author,
     };
 
-    this.props.create(body)
+    this.props.create(post)
+  }
+
+  onEdit(event) {
+    event.preventDefault();
+
+    const post = {
+      id: this.props.post[0].id,
+      title: this.state.title,
+      body: this.state.body
+    };
+
+    this.props.edit(post);
   }
 
   onChange() {
     this.setState({
       title: this.title.value,
       body: this.body.value,
-      author: this.author.value,
-      category: this.category.value
+      author: this.author && this.author.value,
+      category: this.category && this.category.value
     })
+  }
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.creating) {
+      this.setState(nextProps.post[0]);
+    }
   }
 
   render() {
     return (
       <div className="create-edit">
-        <form onSubmit={this.onCreate}>
+        <form onSubmit={ (this.props.creating && this.onCreate) || this.onEdit }>
           <div className="form-group">
             <label htmlFor="title">Title</label>
-            <input 
-              type="text" 
-              className="form-control" 
-              id="title" 
+            <input
+              type="text"
+              className="form-control"
+              id="title"
               ref={title => { this.title = title}}
               onChange={this.onChange}
               value={this.state.title}
             />
           </div>
+          {this.props.creating && <div>
           <div className="form-group">
             <label htmlFor="category">Category</label>
-            <select 
-              className="form-control" 
-              id="category" 
+            <select
+              className="form-control"
+              id="category"
               ref={category => { this.category = category}}
               onChange={this.onChange}
               value={this.state.category}
@@ -73,21 +92,22 @@ class CreateEdit extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="author">Author</label>
-            <input 
-              type="text" 
-              className="form-control" 
-              id="author" 
+            <input
+              type="text"
+              className="form-control"
+              id="author"
               ref={author => { this.author = author}}
               onChange={this.onChange}
               value={this.state.author}
             />
           </div>
+          </div>}
           <div className="form-group">
             <label htmlFor="body">Body</label>
-            <textarea 
-              className="form-control" 
-              id="body" 
-              rows="3" 
+            <textarea
+              className="form-control"
+              id="body"
+              rows="3"
               ref={body => { this.body = body }}
               onChange={this.onChange}
               value={this.state.body}
@@ -100,12 +120,17 @@ class CreateEdit extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  categories: state.categories
+const mapStateToProps = (state, ownState) => ({
+    categories: state.categories,
+    creating: ownState.match.path === '/posts/create' ? true : false,
+    post: state.posts.filter(post => (
+      post.id === ownState.match.params.id
+    ))
 });
 
 const mapDispatchToProps = dispatch => ({
-  create: post => dispatch(postNew(post))
+  create: post => dispatch(postNew(post)),
+  edit: post => dispatch(postEdit(post))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEdit);
