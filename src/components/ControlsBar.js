@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ControlsBar = () => (
-    <ul class="nav">
-        <li class="nav-item">
+    <ul className="nav">
+        <li className="nav-item">
             <Link className="nav-link ion-compose" to="/posts/create" style={{fontSize: '36px'}}></Link>
         </li>
         <li className="nav-item dropdown">

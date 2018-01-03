@@ -29,6 +29,7 @@ class Post extends Component {
     this.voteUpComment = this.voteUpComment.bind(this);
     this.voteDownPost = this.voteDownPost.bind(this);
     this.voteUpPost = this.voteUpPost.bind(this);
+    this.edit = this.edit.bind(this);
   }
 
   addComment() {
@@ -42,8 +43,8 @@ class Post extends Component {
     window.$(`#${ID_MODAL}`).modal('show');
   }
 
-  edit() {
-
+  edit(post) {
+    this.props.history.push(`/posts/${post.id}/edit`);
   }
 
   remove() {
@@ -135,7 +136,7 @@ class Post extends Component {
     console.log(comments)
     return (
       <div className="post">
-        <Card document={post} addComment={this.addComment} voteDown={this.voteDownPost} voteUp={this.voteUpPost}>
+        <Card document={post} addComment={this.addComment} edit={this.edit} voteDown={this.voteDownPost} voteUp={this.voteUpPost}>
           {comments.map(comment => (
             <Card document={comment} key={comment.id} edit={this.editComment} remove={this.removeComment} voteDown={this.voteDownComment} voteUp={this.voteUpComment} />
           ))}
