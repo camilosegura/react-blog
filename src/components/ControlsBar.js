@@ -1,21 +1,38 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { orderCreatedFirst, orderCreatedLast, orderVotedDown, orderVotedUp } from '../actions/posts';
+class ControlsBar extends Component {
 
-const ControlsBar = () => (
-    <ul className="nav">
-        <li className="nav-item">
-            <Link className="nav-link ion-compose" to="/posts/create" style={{fontSize: '36px'}}></Link>
-        </li>
-        <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Order By</a>
-            <div className="dropdown-menu">
-                <button className="dropdown-item">Voted More</button>
-                <a className="dropdown-item" href="#">Voted Less</a>
-                <a className="dropdown-item" href="#">Created First</a>
-                <a className="dropdown-item" href="#">Created Last</a>
-            </div>
-        </li>
-    </ul>
-)
+  render () {
+    return (
+      <ul className="nav">
+          <li className="nav-item">
+              <Link className="nav-link ion-compose" to="/posts/create"></Link>
+          </li>
+          <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Order By</a>
+              <div className="dropdown-menu">
+                  <button className="dropdown-item" onClick={() => this.props.votedUp(this.props.posts)}>Voted More</button>
+                  <button className="dropdown-item">Voted Less</button>
+                  <button className="dropdown-item" onClick={() => this.props.createdFirst(this.props.posts)}>Created First</button>
+                  <button className="dropdown-item" onClick={() => this.props.createdLast(this.props.posts)}>Created Last</button>
+              </div>
+          </li>
+      </ul>
+    )
+  }
+}
 
-export default ControlsBar;
+const mapStateToProps = (state) => ({
+  posts: state.posts
+});
+
+const mapDispatchToProps = dispatch => ({
+  createdFirst: posts => dispatch(orderCreatedFirst(posts)),
+  createdLast: posts => dispatch(orderCreatedLast(posts)),
+  votedUp: posts => dispatch(orderVotedUp(posts)),
+  votedDown: posts => dispatch(orderVotedDown(posts)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ControlsBar);
