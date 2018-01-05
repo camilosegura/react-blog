@@ -1,9 +1,9 @@
-import { ALL_POSTS, BY_CATEGORY_POSTS, ADD_POST, EDIT_POST } from '../actions/posts';
+import { ALL_POSTS, BY_CATEGORY_POSTS, ADD_POST, EDIT_POST, DISABLE_POST } from '../actions/posts';
 
 const initialState = []
 
 const posts = (state = initialState, action) => {
-  const { posts, post } = action;
+  const { posts, post, id } = action;
 
   switch(action.type) {
     case ALL_POSTS :
@@ -30,7 +30,9 @@ const posts = (state = initialState, action) => {
 
         return st;
     });
-    return newState
+    case DISABLE_POST :
+      const activeState = state.filter(st => st.id !== id);
+    return activeState
     default :
       return state;
   }
