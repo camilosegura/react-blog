@@ -4,6 +4,7 @@ export const ALL_POSTS = 'ALL_POSTS';
 export const BY_CATEGORY_POSTS = 'BY_CATEGORY_POSTS';
 export const ADD_POST = 'ADD_POST';
 export const EDIT_POST = 'EDIT_POST';
+export const DISABLE_POST = 'DISABLE_POST';
 
 export const getAll = (posts) => {
   return {
@@ -43,3 +44,12 @@ const edit = post => ({
 export const postEdit = (post) => dispatch =>
   APIPosts.edit(post.id, post)
     .then(post => dispatch(edit(post)))
+
+const disable = id => ({
+  type: DISABLE_POST,
+  id
+})
+
+export const postDisable = id => dispatch =>
+  APIPosts.disable(id)
+    .then(() => dispatch(disable(id)))

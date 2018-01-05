@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1'
 import { fetchByParent as fetchComments, addByParent, editById as editCommentById, disableById as disableCommentById, voteUpById as voteUpCommentById, voteDownById as voteDownCommentById} from '../actions/comments';
+import { postDisable } from '../actions/posts';
 import Card from './Card';
 import Modal from './Modal';
 import { edit } from '../api/comments';
@@ -9,7 +10,7 @@ import { edit } from '../api/comments';
 const ID_MODAL = 'modal-add-comments';
 
 class Post extends Component {
- 
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +31,7 @@ class Post extends Component {
     this.voteDownPost = this.voteDownPost.bind(this);
     this.voteUpPost = this.voteUpPost.bind(this);
     this.edit = this.edit.bind(this);
+    this.remove = this.remove.bind(this);
   }
 
   addComment() {
@@ -47,12 +49,13 @@ class Post extends Component {
     this.props.history.push(`/posts/${post.id}/edit`);
   }
 
-  remove() {
-
+  remove(id) {
+    this.props.remove(id)
+      .then(() => this.props.history.push(`/`));
   }
 
   editComment(comment) {
-    
+
     this.setState({
       id: comment.id,
       author: comment.author,
@@ -63,7 +66,7 @@ class Post extends Component {
       window.$(`#${ID_MODAL}`).modal('show');
     });
 
-    
+
   }
 
   onEditComment(event) {
@@ -85,7 +88,7 @@ class Post extends Component {
 
   onSubmit(event) {
     event.preventDefault()
-    
+
     const body = {
       id: uuidv1(),
       timestamp: Date.now(),
@@ -136,7 +139,7 @@ class Post extends Component {
     console.log(comments)
     return (
       <div className="post">
-        <Card document={post} addComment={this.addComment} edit={this.edit} voteDown={this.voteDownPost} voteUp={this.voteUpPost}>
+        <Card document={post} addComment={this.addComment} edit={this.edit} remove={this.remove} voteDown={this.voteDownPost} voteUp={this.voteUpPost}>
           {comments.map(comment => (
             <Card document={comment} key={comment.id} edit={this.editComment} remove={this.removeComment} voteDown={this.voteDownComment} voteUp={this.voteUpComment} />
           ))}
@@ -145,11 +148,11 @@ class Post extends Component {
           <form onSubmit={this.state.onSubmit}>
             <div className="form-group" style={{display: (this.state.edit && 'none') || 'block'}}>
               <label htmlFor="author">Author</label>
-              <input 
-                type="text" 
-                className="form-control" 
-                name="author" 
-                placeholder="Author" 
+              <input
+                type="text"
+                className="form-control"
+                name="author"
+                placeholder="Author"
                 ref={author => { this.author = author}}
                 onChange={this.onChange}
                 value={this.state.author}
@@ -157,10 +160,10 @@ class Post extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="body">Body</label>
-              <textarea 
-                className="form-control" 
-                name="body" 
-                rows="3" 
+              <textarea
+                className="form-control"
+                name="body"
+                rows="3"
                 ref={body => { this.body = body }}
                 onChange={this.onChange}
                 value={this.state.body}
@@ -190,7 +193,8 @@ const mapDispatchToProps = dispatch => ({
           editComment: (id, comment) => dispatch(editCommentById(id, comment)),
           removeComment: id => dispatch(disableCommentById(id)),
           voteUpComment: (id, option) => dispatch(voteUpCommentById(id, option)),
-          voteDownComment: (id, option) => dispatch(voteDownCommentById(id, option))
+          voteDownComment: (id, option) => dispatch(voteDownCommentById(id, option)),
+          remove: id => dispatch(postDisable(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
