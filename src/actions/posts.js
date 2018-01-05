@@ -5,6 +5,10 @@ export const BY_CATEGORY_POSTS = 'BY_CATEGORY_POSTS';
 export const ADD_POST = 'ADD_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const DISABLE_POST = 'DISABLE_POST';
+export const ORDER_VOTED_UP = 'ORDER_VOTED_UP';
+export const ORDER_VOTED_DOWN = 'ORDER_VOTED_DOWN';
+export const ORDER_CREATED_FIRST = 'ORDER_CREATED_FIRST';
+export const ORDER_CREATED_LAST = 'ORDER_CREATED_LAST';
 
 export const getAll = (posts) => {
   return {
@@ -41,7 +45,7 @@ const edit = post => ({
   post
 })
 
-export const postEdit = (post) => dispatch =>
+export const postEdit = post => dispatch =>
   APIPosts.edit(post.id, post)
     .then(post => dispatch(edit(post)))
 
@@ -53,3 +57,23 @@ const disable = id => ({
 export const postDisable = id => dispatch =>
   APIPosts.disable(id)
     .then(() => dispatch(disable(id)))
+
+export const orderVotedUp = posts => ({
+  type: ORDER_VOTED_UP,
+  posts
+});
+
+export const orderVotedDown = posts => ({
+  type: ORDER_VOTED_DOWN,
+  posts
+});
+
+export const orderCreatedFirst = posts => ({
+  type: ORDER_CREATED_FIRST,
+  posts
+});
+
+export const orderCreatedLast = posts => ({
+  type: ORDER_CREATED_LAST,
+  posts
+});

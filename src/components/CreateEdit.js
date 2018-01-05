@@ -32,6 +32,7 @@ class CreateEdit extends Component {
     };
 
     this.props.create(post)
+      .then(() => this.props.history.push(`/`));
   }
 
   onEdit(event) {
