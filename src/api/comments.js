@@ -2,11 +2,11 @@ import { api, headers, PUT, POST, DELETE } from './common';
 
 export const getByParent = (id) =>
   fetch(`${api}/posts/${id}/comments`, { headers })
-    .then(res => res.json())
+    .then(res => res.json());
 
-export const get = (id) =>
+export const get = id =>
   fetch(`${api}/comments/${id}`, { headers })
-    .then(res => res.json())
+    .then(res => res.json());
 
 export const edit = (id, body) =>
   fetch(`${api}/comments/${id}`, {
@@ -16,9 +16,9 @@ export const edit = (id, body) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ ...body })
-  })
+  });
 
-export const add = (body) =>
+export const add = body =>
   fetch(`${api}/comments`, {
     method: POST,
     headers: {
@@ -26,21 +26,20 @@ export const add = (body) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ ...body })
-  })
+  });
 
-export const vote = (id, body) =>
+export const vote = (id, option) =>
   fetch(`${api}/comments/${id}`, {
     method: POST,
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ ...body })
-  })
+    body: JSON.stringify({ option })
+  });
 
-export const disable = (id) =>
+export const disable = id =>
   fetch(`${api}/comments/${id}`, {
     method: DELETE,
     headers
-  })
-
+  });

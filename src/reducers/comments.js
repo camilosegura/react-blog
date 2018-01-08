@@ -1,4 +1,4 @@
-import { BY_PARENT, ADD, EDIT, DELETE, VOTE_DOWN, VOTE_UP } from '../actions/comments';
+import { BY_PARENT, ADD, EDIT, DELETE, VOTE_COMMENT } from '../actions/comments';
 
 const initialState = []
 
@@ -34,26 +34,18 @@ const comments = (state = initialState, action) => {
         case DELETE :
             const actives = state.filter(st => st.id !== comment.id);
             return actives;
-        case VOTE_DOWN :
-            const voteDownState = state.map(st => {
-                if (st.id === comment.id) {
-                  st.voteScore = comment.voteScore
-                }
+        case VOTE_COMMENT :
+          state.map(st => {
+              if (st.id === comment.id) {
+                st.voteScore = comment.voteScore
+              }
 
-                return st;
-            });
+              return st;
+          });
 
-            return voteDownState;
-        case VOTE_UP :
-            const voteUpState = state.map(st => {
-                if (st.id === comment.id) {
-                    st.voteScore = comment.voteScore
-                }
-
-                return st;
-            });
-
-            return voteUpState;
+          return [
+            ...state
+          ];
         default :
             return state;
     }

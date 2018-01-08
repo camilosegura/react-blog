@@ -13,10 +13,10 @@ class ControlsBar extends Component {
           <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Order By</a>
               <div className="dropdown-menu">
-                  <button className="dropdown-item" onClick={() => this.props.votedUp(this.props.posts)}>Voted More</button>
-                  <button className="dropdown-item">Voted Less</button>
-                  <button className="dropdown-item" onClick={() => this.props.createdFirst(this.props.posts)}>Created First</button>
-                  <button className="dropdown-item" onClick={() => this.props.createdLast(this.props.posts)}>Created Last</button>
+                  <button className="dropdown-item" onClick={() => this.props.votedUp()}>Voted More</button>
+                  <button className="dropdown-item" onClick={() => this.props.votedDown()}>Voted Less</button>
+                  <button className="dropdown-item" onClick={() => this.props.createdFirst()}>Created First</button>
+                  <button className="dropdown-item" onClick={() => this.props.createdLast()}>Created Last</button>
               </div>
           </li>
       </ul>
