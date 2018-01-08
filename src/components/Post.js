@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1'
 import { fetchByParent as fetchComments, addByParent, editById as editCommentById, disableById as disableCommentById, voteById as voteCommentById} from '../actions/comments';
-import { postDisable, postVote } from '../actions/posts';
+import { postDisable, postVote, increaseComments, decreaseComments } from '../actions/posts';
 import Card from './Card';
 import Modal from './Modal';
 import { edit } from '../api/comments';
@@ -65,8 +65,6 @@ class Post extends Component {
     }, () => {
       window.$(`#${ID_MODAL}`).modal('show');
     });
-
-
   }
 
   onEditComment(event) {
@@ -79,11 +77,13 @@ class Post extends Component {
     }
 
     this.props.editComment(id, comment)
+      .then((action) => window.$(`#${ID_MODAL}`).modal('hide'));
 
   }
 
   removeComment(id) {
-    this.props.removeComment(id);
+    this.props.removeComment(id)
+      .then(action => this.props.decreaseComments(this.props.match.params.id));
   }
 
   onSubmit(event) {
@@ -97,7 +97,11 @@ class Post extends Component {
       parentId: this.props.match.params.id
     };
 
-    this.props.addComment(body);
+    this.props.addComment(body)
+      .then(action => {
+        return this.props.increaseComments(this.props.match.params.id);
+      })
+      .then(action => window.$(`#${ID_MODAL}`).modal('hide'));
 
   }
 
@@ -186,13 +190,15 @@ const mapStateToProps = (state, ownState) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-          getComments: id => dispatch(fetchComments(id)),
-          addComment: body => dispatch(addByParent(body)),
-          editComment: (id, comment) => dispatch(editCommentById(id, comment)),
-          removeComment: id => dispatch(disableCommentById(id)),
-          voteComment: (id, option) => dispatch(voteCommentById(id, option)),
-          remove: id => dispatch(postDisable(id)),
-          vote: (id, option) => dispatch(postVote(id, option))
-})
+  getComments: id => dispatch(fetchComments(id)),
+  addComment: body => dispatch(addByParent(body)),
+  editComment: (id, comment) => dispatch(editCommentById(id, comment)),
+  removeComment: id => dispatch(disableCommentById(id)),
+  voteComment: (id, option) => dispatch(voteCommentById(id, option)),
+  remove: id => dispatch(postDisable(id)),
+  vote: (id, option) => dispatch(postVote(id, option)),
+  increaseComments: id => dispatch(increaseComments(id)),
+  decreaseComments: id => dispatch(decreaseComments(id))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);

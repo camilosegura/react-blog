@@ -55,13 +55,25 @@ class CreateEdit extends Component {
       category: this.category && this.category.value
     })
   }
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.creating) {
-      this.setState(nextProps.post[0]);
+
+  updateState() {
+    if (!this.props.creating) {
+      this.setState(
+        this.props.post[0]
+      );
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.updateState();
+    }
+
+  componentDidMount() {
+    this.updateState();
+  }
+
   render() {
+    console.log(this.state)
     return (
       <div className="create-edit">
         <form onSubmit={ (this.props.creating && this.onCreate) || this.onEdit }>
