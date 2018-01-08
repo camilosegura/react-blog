@@ -17,7 +17,7 @@ class Navbar extends Component {
                         <ul className="navbar-nav mr-auto">
                             {this.props.categories.map(category => (
                                 <li className="nav-item active" key={category.name}>
-                                    <Link className="nav-link" to={`/category/${category.path}/posts`}>{category.name} <span className="sr-only">(current)</span></Link>
+                                    <Link className="nav-link" to={`/${category.path}`}>{category.name} <span className="sr-only">(current)</span></Link>
                                 </li>
                             ))}
                         </ul>

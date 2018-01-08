@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1'
-import { fetchByParent as fetchComments, addByParent, editById as editCommentById, disableById as disableCommentById, voteById as voteCommentById} from '../actions/comments';
+import {withRouter} from "react-router-dom";
+import { addByParent, editById as editCommentById, disableById as disableCommentById, voteById as voteCommentById} from '../actions/comments';
 import { postDisable, postVote, increaseComments, decreaseComments } from '../actions/posts';
 import Card from './Card';
 import Modal from './Modal';
@@ -46,7 +47,7 @@ class Post extends Component {
   }
 
   edit(post) {
-    this.props.history.push(`/posts/${post.id}/edit`);
+    this.props.history.push(`/${post.category}/${post.id}/edit`);
   }
 
   remove(id) {
@@ -83,7 +84,7 @@ class Post extends Component {
 
   removeComment(id) {
     this.props.removeComment(id)
-      .then(action => this.props.decreaseComments(this.props.match.params.id));
+      .then(action => this.props.decreaseComments(this.props.post.id));
   }
 
   onSubmit(event) {
@@ -94,12 +95,12 @@ class Post extends Component {
       timestamp: Date.now(),
       body: this.state.body,
       author: this.state.author,
-      parentId: this.props.match.params.id
+      parentId: this.props.post.id
     };
 
     this.props.addComment(body)
       .then(action => {
-        return this.props.increaseComments(this.props.match.params.id);
+        return this.props.increaseComments(this.props.post.id);
       })
       .then(action => window.$(`#${ID_MODAL}`).modal('hide'));
 
@@ -132,21 +133,18 @@ class Post extends Component {
     })
   }
 
-  componentDidMount() {
-    this.props.getComments(this.props.match.params.id);
-  }
-
   render() {
-    const { post, comments } = this.props;
+    const { post, comments, listView } = this.props;
 
     return (
       <div className="post">
-        <Card document={post} addComment={this.addComment} edit={this.edit} remove={this.remove} voteDown={this.voteDownPost} voteUp={this.voteUpPost}>
-          {comments.map(comment => (
+        <Card document={post} addComment={this.addComment} edit={this.edit} remove={this.remove} voteDown={this.voteDownPost} voteUp={this.voteUpPost} onListView={listView}>
+          {!listView && comments.map(comment => (
             <Card document={comment} key={comment.id} edit={this.editComment} remove={this.removeComment} voteDown={this.voteDownComment} voteUp={this.voteUpComment} />
           ))}
         </Card>
-        <Modal id={ID_MODAL}>
+
+        {!listView && <Modal id={ID_MODAL}>
           <form onSubmit={this.state.onSubmit}>
             <div className="form-group" style={{display: (this.state.edit && 'none') || 'block'}}>
               <label htmlFor="author">Author</label>
@@ -173,24 +171,17 @@ class Post extends Component {
             </div>
             <button className="btn btn-success" type="submit">Send</button>
           </form>
-        </Modal>
+        </Modal> }
       </div>
         )
   }
 }
 
-const mapStateToProps = (state, ownState) => {
-  const posts = state.posts.filter(post => post.id === ownState.match.params.id);
-  const post = posts.length && posts[0];
-
-  return {
-        post,
-        comments: state.comments.filter(comment => comment.parentId === ownState.match.params.id && !comment.deleted)
-  }
-};
+const mapStateToProps = (state, ownState) => ({
+  comments: state.comments.filter(comment => comment.parentId === ownState.post.id && !comment.deleted)
+});
 
 const mapDispatchToProps = dispatch => ({
-  getComments: id => dispatch(fetchComments(id)),
   addComment: body => dispatch(addByParent(body)),
   editComment: (id, comment) => dispatch(editCommentById(id, comment)),
   removeComment: id => dispatch(disableCommentById(id)),
@@ -201,4 +192,4 @@ const mapDispatchToProps = dispatch => ({
   decreaseComments: id => dispatch(decreaseComments(id))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Post);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Post));
