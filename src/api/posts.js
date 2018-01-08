@@ -32,14 +32,14 @@ export const disable = (id) =>
   })
   .then(res => res.json())
 
-export const vote = (id, body) =>
+export const vote = (id, option) =>
   fetch(`${api}/posts/${id}`, {
     method: POST,
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ body })
+    body: JSON.stringify({ option })
   })
   .then(res => res.json())
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1'
 import { fetchByParent as fetchComments, addByParent, editById as editCommentById, disableById as disableCommentById, voteUpById as voteUpCommentById, voteDownById as voteDownCommentById} from '../actions/comments';
-import { postDisable } from '../actions/posts';
+import { postDisable, postVoteDown, postVoteUp } from '../actions/posts';
 import Card from './Card';
 import Modal from './Modal';
 import { edit } from '../api/comments';
@@ -102,11 +102,11 @@ class Post extends Component {
   }
 
   voteUpPost(id) {
-    debugger
+    this.props.voteUp(id);
   }
 
   voteDownPost(id) {
-    debugger
+    this.props.voteDown(id);
   }
 
   voteUpComment(id) {
@@ -136,7 +136,7 @@ class Post extends Component {
 
   render() {
     const { post, comments } = this.props;
-    console.log(comments)
+
     return (
       <div className="post">
         <Card document={post} addComment={this.addComment} edit={this.edit} remove={this.remove} voteDown={this.voteDownPost} voteUp={this.voteUpPost}>
@@ -194,7 +194,9 @@ const mapDispatchToProps = dispatch => ({
           removeComment: id => dispatch(disableCommentById(id)),
           voteUpComment: (id, option) => dispatch(voteUpCommentById(id, option)),
           voteDownComment: (id, option) => dispatch(voteDownCommentById(id, option)),
-          remove: id => dispatch(postDisable(id))
+          remove: id => dispatch(postDisable(id)),
+          voteUp: id => dispatch(postVoteUp(id)),
+          voteDown: id => dispatch(postVoteDown(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
