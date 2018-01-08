@@ -8,7 +8,9 @@ import {
   ORDER_VOTED_DOWN,
   ORDER_CREATED_FIRST,
   ORDER_CREATED_LAST,
-  VOTE_POST
+  VOTE_POST,
+  INCREASE_COMMENTS_POST,
+  DECREASE_COMMENTS_POST
 } from '../actions/posts';
 
 const initialState = []
@@ -88,6 +90,26 @@ const posts = (state = initialState, action) => {
       });
 
       return voteUpState;
+    case INCREASE_COMMENTS_POST :
+      state.map(st => {
+        if (st.id === id) {
+          st.commentCount++;
+        }
+      });
+
+      return [
+        ...state
+      ]
+    case DECREASE_COMMENTS_POST :
+      state.map(st => {
+        if (st.id === id) {
+          st.commentCount--;
+        }
+      });
+
+      return [
+        ...state
+      ]
     default :
       return state;
   }

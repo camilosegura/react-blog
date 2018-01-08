@@ -10,6 +10,8 @@ export const ORDER_VOTED_DOWN = 'ORDER_VOTED_DOWN';
 export const ORDER_CREATED_FIRST = 'ORDER_CREATED_FIRST';
 export const ORDER_CREATED_LAST = 'ORDER_CREATED_LAST';
 export const VOTE_POST = 'VOTE_UP_POST';
+export const INCREASE_COMMENTS_POST = 'INCREASE_COMMENTS_POST';
+export const DECREASE_COMMENTS_POST = 'DECREASE_COMMENTS_POST';
 
 export const getAll = (posts) => {
   return {
@@ -87,3 +89,13 @@ const vote = post => ({
 export const postVote = (id, option) => dispatch =>
   APIPosts.vote(id, option)
     .then((post) => dispatch(vote(post)));
+
+export const increaseComments = id => ({
+  type: INCREASE_COMMENTS_POST,
+  id
+});
+
+export const decreaseComments = id => ({
+  type: DECREASE_COMMENTS_POST,
+  id
+});
