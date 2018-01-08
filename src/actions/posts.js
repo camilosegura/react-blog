@@ -9,8 +9,7 @@ export const ORDER_VOTED_UP = 'ORDER_VOTED_UP';
 export const ORDER_VOTED_DOWN = 'ORDER_VOTED_DOWN';
 export const ORDER_CREATED_FIRST = 'ORDER_CREATED_FIRST';
 export const ORDER_CREATED_LAST = 'ORDER_CREATED_LAST';
-export const VOTE_UP_POST = 'VOTE_UP_POST';
-export const VOTE_DOWN_POST = 'VOTE_DOWN_POST';
+export const VOTE_POST = 'VOTE_UP_POST';
 
 export const getAll = (posts) => {
   return {
@@ -80,20 +79,11 @@ export const orderCreatedLast = posts => ({
   posts
 });
 
-const voteUp = post => ({
-  type: VOTE_UP_POST,
+const vote = post => ({
+  type: VOTE_POST,
   post
 });
 
-export const postVoteUp = id => dispatch =>
-  APIPosts.vote(id, 'upVote')
-    .then((post) => dispatch(voteUp(post)));
-
-const voteDown = post => ({
-  type: VOTE_DOWN_POST,
-  post
-});
-
-export const postVoteDown = id => dispatch =>
-  APIPosts.vote(id, 'downVote')
-    .then((post) => dispatch(voteDown(post)));
+export const postVote = (id, option) => dispatch =>
+  APIPosts.vote(id, option)
+    .then((post) => dispatch(vote(post)));

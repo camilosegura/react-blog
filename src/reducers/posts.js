@@ -8,8 +8,7 @@ import {
   ORDER_VOTED_DOWN,
   ORDER_CREATED_FIRST,
   ORDER_CREATED_LAST,
-  VOTE_DOWN_POST,
-  VOTE_UP_POST
+  VOTE_POST
 } from '../actions/posts';
 
 const initialState = []
@@ -47,33 +46,39 @@ const posts = (state = initialState, action) => {
       const activeState = state.filter(st => st.id !== id);
       return activeState
     case ORDER_CREATED_FIRST :
-      posts.sort((a, b) => {
+      state.sort((a, b) => {
         return a.timestamp - b.timestamp;
       });
 
       return [
-        ...posts
+        ...state
       ];
     case ORDER_CREATED_LAST :
-      posts.sort((a, b) => {
+      state.sort((a, b) => {
         return b.timestamp - a.timestamp;
       });
 
       return [
-        ...posts
+        ...state
       ];
 
-    case VOTE_DOWN_POST :
-      const voteDownState = state.map(st => {
-          if (st.id === post.id) {
-            st.voteScore = post.voteScore;
-          }
-
-          return st;
+    case ORDER_VOTED_DOWN :
+      state.sort((a, b) => {
+        return a.voteScore - b.voteScore;
       });
 
-      return voteDownState;
-    case VOTE_UP_POST :
+      return [
+        ...state
+      ];
+    case ORDER_VOTED_UP :
+      state.sort((a, b) => {
+        return b.voteScore - a.voteScore;
+      });
+
+      return [
+        ...state
+      ];
+    case VOTE_POST :
       const voteUpState = state.map(st => {
           if (st.id === post.id) {
             st.voteScore = post.voteScore;

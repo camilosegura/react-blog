@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1'
-import { fetchByParent as fetchComments, addByParent, editById as editCommentById, disableById as disableCommentById, voteUpById as voteUpCommentById, voteDownById as voteDownCommentById} from '../actions/comments';
-import { postDisable, postVoteDown, postVoteUp } from '../actions/posts';
+import { fetchByParent as fetchComments, addByParent, editById as editCommentById, disableById as disableCommentById, voteById as voteCommentById} from '../actions/comments';
+import { postDisable, postVote } from '../actions/posts';
 import Card from './Card';
 import Modal from './Modal';
 import { edit } from '../api/comments';
@@ -102,25 +102,23 @@ class Post extends Component {
   }
 
   voteUpPost(id) {
-    this.props.voteUp(id);
+    const option = 'upVote';
+    this.props.vote(id, option);
   }
 
   voteDownPost(id) {
-    this.props.voteDown(id);
+    const option = 'downVote';
+    this.props.vote(id, option);
   }
 
   voteUpComment(id) {
-    const body = {
-      option: "upVote"
-    };
-    this.props.voteUpComment(id, body)
+    const option = "upVote";
+    this.props.voteComment(id, option)
   }
 
   voteDownComment(id) {
-    const body = {
-      option: "downVote"
-    };
-    this.props.voteDownComment(id, body)
+    const option = "downVote";
+    this.props.voteComment(id, option)
   }
 
   onChange() {
@@ -192,11 +190,9 @@ const mapDispatchToProps = dispatch => ({
           addComment: body => dispatch(addByParent(body)),
           editComment: (id, comment) => dispatch(editCommentById(id, comment)),
           removeComment: id => dispatch(disableCommentById(id)),
-          voteUpComment: (id, option) => dispatch(voteUpCommentById(id, option)),
-          voteDownComment: (id, option) => dispatch(voteDownCommentById(id, option)),
+          voteComment: (id, option) => dispatch(voteCommentById(id, option)),
           remove: id => dispatch(postDisable(id)),
-          voteUp: id => dispatch(postVoteUp(id)),
-          voteDown: id => dispatch(postVoteDown(id))
+          vote: (id, option) => dispatch(postVote(id, option))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
