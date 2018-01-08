@@ -44,7 +44,8 @@ class CreateEdit extends Component {
       body: this.state.body
     };
 
-    this.props.edit(post);
+    this.props.edit(post)
+      .then(() => this.props.history.push(`/${this.props.post[0].category}/${this.props.post[0].id}`));
   }
 
   onChange() {
@@ -73,7 +74,7 @@ class CreateEdit extends Component {
   }
 
   render() {
-    console.log(this.state)
+
     return (
       <div className="create-edit">
         <form onSubmit={ (this.props.creating && this.onCreate) || this.onEdit }>
@@ -137,7 +138,7 @@ const mapStateToProps = (state, ownState) => ({
     categories: state.categories,
     creating: ownState.match.path === '/posts/create' ? true : false,
     post: state.posts.filter(post => (
-      post.id === ownState.match.params.id
+      post.id === ownState.match.params.post_id
     ))
 });
 
