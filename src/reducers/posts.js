@@ -7,7 +7,9 @@ import {
   ORDER_VOTED_UP,
   ORDER_VOTED_DOWN,
   ORDER_CREATED_FIRST,
-  ORDER_CREATED_LAST
+  ORDER_CREATED_LAST,
+  VOTE_DOWN_POST,
+  VOTE_UP_POST
 } from '../actions/posts';
 
 const initialState = []
@@ -60,6 +62,27 @@ const posts = (state = initialState, action) => {
       return [
         ...posts
       ];
+
+    case VOTE_DOWN_POST :
+      const voteDownState = state.map(st => {
+          if (st.id === post.id) {
+            st.voteScore = post.voteScore;
+          }
+
+          return st;
+      });
+
+      return voteDownState;
+    case VOTE_UP_POST :
+      const voteUpState = state.map(st => {
+          if (st.id === post.id) {
+            st.voteScore = post.voteScore;
+          }
+
+          return st;
+      });
+
+      return voteUpState;
     default :
       return state;
   }

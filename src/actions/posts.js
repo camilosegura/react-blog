@@ -9,54 +9,56 @@ export const ORDER_VOTED_UP = 'ORDER_VOTED_UP';
 export const ORDER_VOTED_DOWN = 'ORDER_VOTED_DOWN';
 export const ORDER_CREATED_FIRST = 'ORDER_CREATED_FIRST';
 export const ORDER_CREATED_LAST = 'ORDER_CREATED_LAST';
+export const VOTE_UP_POST = 'VOTE_UP_POST';
+export const VOTE_DOWN_POST = 'VOTE_DOWN_POST';
 
 export const getAll = (posts) => {
   return {
     type: ALL_POSTS,
     posts
   }
-}
+};
 
-export const fetchAll = () => dispatch => {
+export const fetchAll = () => dispatch =>
   APIPosts.getAll()
-    .then(posts => dispatch(getAll(posts)))
-}
+    .then(posts => dispatch(getAll(posts)));
+
 
 export const getByCategory = posts => ({
   type: BY_CATEGORY_POSTS,
   posts
-})
+});
 
 export const fetchByCategory = category => dispatch =>
   APIPosts.getByCategory(category)
-    .then(posts => dispatch(getByCategory(posts)))
+    .then(posts => dispatch(getByCategory(posts)));
 
 export const add = post => ({
   type: ADD_POST,
   post
-})
+});
 
 export const postNew = post => dispatch =>
   APIPosts.add(post)
-    .then(post => dispatch(add(post)))
+    .then(post => dispatch(add(post)));
 
 const edit = post => ({
   type: EDIT_POST,
   post
-})
+});
 
 export const postEdit = post => dispatch =>
   APIPosts.edit(post.id, post)
-    .then(post => dispatch(edit(post)))
+    .then(post => dispatch(edit(post)));
 
 const disable = id => ({
   type: DISABLE_POST,
   id
-})
+});
 
 export const postDisable = id => dispatch =>
   APIPosts.disable(id)
-    .then(() => dispatch(disable(id)))
+    .then(() => dispatch(disable(id)));
 
 export const orderVotedUp = posts => ({
   type: ORDER_VOTED_UP,
@@ -77,3 +79,21 @@ export const orderCreatedLast = posts => ({
   type: ORDER_CREATED_LAST,
   posts
 });
+
+const voteUp = post => ({
+  type: VOTE_UP_POST,
+  post
+});
+
+export const postVoteUp = id => dispatch =>
+  APIPosts.vote(id, 'upVote')
+    .then((post) => dispatch(voteUp(post)));
+
+const voteDown = post => ({
+  type: VOTE_DOWN_POST,
+  post
+});
+
+export const postVoteDown = id => dispatch =>
+  APIPosts.vote(id, 'downVote')
+    .then((post) => dispatch(voteDown(post)));
