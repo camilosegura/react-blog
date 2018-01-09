@@ -51,8 +51,8 @@ class Post extends Component {
   }
 
   remove(id) {
-    this.props.remove(id)
-      .then(() => this.props.history.push(`/`));
+    this.props.remove(id);
+    this.props.history.push(`/`);
   }
 
   editComment(comment) {
