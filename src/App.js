@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Default from './components/Default';
 import Category from './components/Category';
 import Post from './components/PostComments';
+import NotFound404 from './components/NotFound404';
 import CreateEdit from './components/CreateEdit';
 import { fetchAll as fetchAllPosts } from './actions/posts';
 import { fetchAll as fetchAllCategories } from './actions/categories';
@@ -33,6 +34,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={Default} />
             <Route exact path='/create' component={CreateEdit} />
+            <Route exact path='/not-found' component={NotFound404} />
             <Route exact path='/:category' component={Category} />
             <Route path='/:category/:post_id/edit' component={CreateEdit} />
             <Route exact path='/:category/:post_id' component={Post} />
