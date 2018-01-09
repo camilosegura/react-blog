@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Post from './Post';
 
-const PostComments = ({post}) =>
-  <Post post={post} listView={false} />
-
-
+const PostComments = ({post}) => {
+  return <Post post={post} listView={false} />
+}
 
 const mapStateToProps = (state, ownState) => {
   const posts = state.posts.filter(post => post.id === ownState.match.params.post_id);
@@ -16,7 +15,4 @@ const mapStateToProps = (state, ownState) => {
   }
 };
 
-const mapDispatchToProps = dispatch => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostComments);
+export default connect(mapStateToProps)(PostComments);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import uuidv1 from 'uuid/v1'
+import { uuidv4 } from '../utils/helpers';
 import {withRouter} from "react-router-dom";
 import { addByParent, editById as editCommentById, disableById as disableCommentById, voteById as voteCommentById} from '../actions/comments';
 import { postDisable, postVote, increaseComments, decreaseComments } from '../actions/posts';
@@ -91,7 +91,7 @@ class Post extends Component {
     event.preventDefault()
 
     const body = {
-      id: uuidv1(),
+      id: uuidv4(),
       timestamp: Date.now(),
       body: this.state.body,
       author: this.state.author,
@@ -156,6 +156,7 @@ class Post extends Component {
                 ref={author => { this.author = author}}
                 onChange={this.onChange}
                 value={this.state.author}
+                required
               />
             </div>
             <div className="form-group">
@@ -167,6 +168,7 @@ class Post extends Component {
                 ref={body => { this.body = body }}
                 onChange={this.onChange}
                 value={this.state.body}
+                required
               ></textarea>
             </div>
             <button className="btn btn-success" type="submit">Send</button>

@@ -1,10 +1,5 @@
 import * as APIComments from '../api/comments';
-
-export const BY_PARENT = "BY_PARENT";
-export const ADD = 'ADD';
-export const EDIT = 'EDIT';
-export const DELETE = 'DELETE';
-export const VOTE_COMMENT = 'VOTE_COMMENT'
+import { BY_PARENT, ADD_COMMENT, EDIT_COMMENT, DELETE_COMMENT, VOTE_COMMENT } from '../utils/constants';
 
 export const getByParent = (comments) => ({
   type: BY_PARENT,
@@ -16,7 +11,7 @@ export const fetchByParent = id => dispatch =>
         .then(comments => dispatch(getByParent(comments)))
 
 export const add = comment => ({
-  type: ADD,
+  type: ADD_COMMENT,
   comment
 });
 
@@ -26,7 +21,7 @@ export const addByParent = body => dispatch =>
     .then(comment => dispatch(add(comment)))
 
 export const edit = comment => ({
-  type: EDIT,
+  type: EDIT_COMMENT,
   comment
 });
 
@@ -36,7 +31,7 @@ export const editById = (id, comment) => dispatch =>
     .then(comment => dispatch(edit(comment)))
 
 export const disable = comment => ({
-  type: DELETE,
+  type: DELETE_COMMENT,
   comment
 });
 
