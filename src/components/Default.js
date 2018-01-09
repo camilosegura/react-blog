@@ -3,12 +3,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Posts from './Posts';
 
-class Default extends Component{
-  render() {
-    return (
-      <Posts posts={this.props.posts} />
-    );
-  }
+const Default = ({posts}) => {
+  return (
+    <Posts posts={posts} />
+  );
 }
 
 const mapStateToProps = state => (
@@ -17,8 +15,4 @@ const mapStateToProps = state => (
   }
 )
 
-const mapDispatchToProps = dispatch => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Default);
+export default connect(mapStateToProps)(Default);

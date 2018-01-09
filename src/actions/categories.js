@@ -1,6 +1,5 @@
 import * as APICategories from '../api/categories';
-
-export const ALL_CATEGORIES = 'ALL_CATEGORIES';
+import { ALL_CATEGORIES } from '../utils/constants';
 
 export const getAll = (categories) => {
   return {
@@ -9,6 +8,6 @@ export const getAll = (categories) => {
   }
 }
 
-export const fetchAll = () => dispatch => 
+export const fetchAll = () => dispatch =>
   APICategories.getAll()
     .then(categories => dispatch(getAll(categories)))

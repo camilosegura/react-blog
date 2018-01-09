@@ -11,12 +11,13 @@ import {
   VOTE_POST,
   INCREASE_COMMENTS_POST,
   DECREASE_COMMENTS_POST
-} from '../actions/posts';
+} from '../utils/constants';
 
 const initialState = []
 
 const posts = (state = initialState, action) => {
   const { posts, post, id } = action;
+  let newState = [];
 
   switch(action.type) {
     case ALL_POSTS :
@@ -35,7 +36,7 @@ const posts = (state = initialState, action) => {
         post
       ];
     case EDIT_POST :
-      const newState = state.map(st => {
+      state.map(st => {
         if (st.id === post.id) {
             st.body = post.body;
             st.title = post.title;
@@ -43,10 +44,12 @@ const posts = (state = initialState, action) => {
 
         return st;
       });
-      return newState;
+      return [
+        ...state
+      ];
     case DISABLE_POST :
-      const activeState = state.filter(st => st.id !== id);
-      return activeState
+      newState = state.filter(st => st.id !== id);
+      return newState
     case ORDER_CREATED_FIRST :
       state.sort((a, b) => {
         return a.timestamp - b.timestamp;
@@ -81,15 +84,17 @@ const posts = (state = initialState, action) => {
         ...state
       ];
     case VOTE_POST :
-      const voteUpState = state.map(st => {
-          if (st.id === post.id) {
-            st.voteScore = post.voteScore;
-          }
+      state.map(st => {
+        if (st.id === post.id) {
+          st.voteScore = post.voteScore;
+        }
 
-          return st;
+        return st;
       });
 
-      return voteUpState;
+      return [
+        ...state
+      ];
     case INCREASE_COMMENTS_POST :
       state.map(st => {
         if (st.id === id) {

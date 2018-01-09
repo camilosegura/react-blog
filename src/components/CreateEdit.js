@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import uuidv1 from 'uuid/v1'
+import { uuidv4 } from '../utils/helpers';
 import { postNew, postEdit } from '../actions/posts';
 
 class CreateEdit extends Component {
@@ -23,7 +23,7 @@ class CreateEdit extends Component {
     event.preventDefault()
 
     const post = {
-      id: uuidv1(),
+      id: uuidv4(),
       timestamp: Date.now(),
       title: this.state.title,
       category: this.state.category,
@@ -87,6 +87,7 @@ class CreateEdit extends Component {
               ref={title => { this.title = title}}
               onChange={this.onChange}
               value={this.state.title}
+              required
             />
           </div>
           {this.props.creating && <div>
@@ -113,6 +114,7 @@ class CreateEdit extends Component {
               ref={author => { this.author = author}}
               onChange={this.onChange}
               value={this.state.author}
+              required
             />
           </div>
           </div>}
@@ -125,6 +127,7 @@ class CreateEdit extends Component {
               ref={body => { this.body = body }}
               onChange={this.onChange}
               value={this.state.body}
+              required
             ></textarea>
           </div>
           <button className="btn btn-success" type="submit">Send</button>

@@ -1,4 +1,4 @@
-import { ALL_CATEGORIES } from '../actions/categories';
+import { ALL_CATEGORIES } from '../utils/constants';
 
 const initialState = [];
 
