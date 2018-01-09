@@ -136,7 +136,7 @@ class CreateEdit extends Component {
 
 const mapStateToProps = (state, ownState) => ({
     categories: state.categories,
-    creating: ownState.match.path === '/posts/create' ? true : false,
+    creating: ownState.match.path === '/create' ? true : false,
     post: state.posts.filter(post => (
       post.id === ownState.match.params.post_id
     ))

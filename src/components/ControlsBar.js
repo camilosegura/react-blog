@@ -8,7 +8,7 @@ class ControlsBar extends Component {
     return (
       <ul className="nav">
           <li className="nav-item">
-              <Link className="nav-link ion-compose" to="/posts/create"></Link>
+              <Link className="nav-link ion-compose" to="/create"></Link>
           </li>
           <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Order By</a>
